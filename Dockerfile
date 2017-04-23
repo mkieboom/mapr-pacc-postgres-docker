@@ -5,9 +5,10 @@
 
 #
 # Use a blank CentOS 7 image as the base
+# Based on the CentOS Postgres Docker image from: https://github.com/CentOS/CentOS-Dockerfiles
 FROM centos:centos7
 
-# Location where Postgress can store it's data files
+# Location where Postgress can store it's data files on MapR-FS
 ENV PGDATA_LOCATION /mapr/demo.mapr.com/postgres
 
 # MapR PACC Specific Details
@@ -59,3 +60,8 @@ EXPOSE 5432
 
 ENTRYPOINT ["/opt/mapr/installer/docker/mapr-setup.sh", "container"]
 CMD ["start"]
+
+# Manually launch Postgres server:
+# sudo su -
+# /launch.sh &
+
