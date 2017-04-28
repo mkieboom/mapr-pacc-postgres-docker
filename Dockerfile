@@ -4,27 +4,14 @@
 #
 
 #
-# Use a blank CentOS 7 image as the base
+# Use a MapR PACC 5.2.0 on CentOS 7 image as the base
 # Based on the CentOS Postgres Docker image from: https://github.com/CentOS/CentOS-Dockerfiles
-FROM centos:centos7
+#FROM maprtech/pacc:5.2.1_3.0_centos7
+FROM maprtech/pacc:5.2.0_2.0_centos7
 
 # Location where Postgress can store it's data files on MapR-FS
 ENV PGDATA_LOCATION /mapr/demo.mapr.com/postgres
 
-# MapR PACC Specific Details
-ENV container docker
-
-RUN yum -y upgrade && yum install -y curl file net-tools openssl sudo syslinux wget which java-1.8.0-openjdk-devel && yum -q clean all
-
-LABEL mapr.os=centos6 mapr.version=5.2.1 mapr.mep_version=3.0
-
-RUN mkdir -p /opt/mapr/installer/docker/ && \
-	curl -L -o /opt/mapr/installer/docker/mapr-setup.sh http://package.mapr.com/releases/installer/mapr-setup.sh && \
-    chmod +x /opt/mapr/installer/docker/mapr-setup.sh
-
-#COPY mapr-setup.sh /opt/mapr/installer/docker/
-
-RUN /opt/mapr/installer/docker/mapr-setup.sh -r http://package.mapr.com/releases container client 5.2.1 3.0
 
 # Fix the MapR repositories as they are currently pointing to MapR internal repo's
 RUN sed -ie "s|artifactory.devops.lab/artifactory/prestage|package.mapr.com|g" /etc/yum.repos.d/mapr_eco.repo
@@ -58,10 +45,4 @@ RUN sed -ie "s|/var/lib/pgsql/data|${PGDATA_LOCATION}|g" /launch.sh
 
 EXPOSE 5432
 
-ENTRYPOINT ["/opt/mapr/installer/docker/mapr-setup.sh", "container"]
-CMD ["start"]
-
-# Manually launch Postgres server:
-# sudo su -
-# /launch.sh &
-
+CMD ["start", "/launch.sh"]
