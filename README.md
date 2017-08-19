@@ -43,7 +43,6 @@ mkieboom/mapr-pacc-postgres-docker
 # Change the MapR specific command line parameters to reflect your MapR cluster 
   
 docker run -d \
---restart=always \
 --cap-add SYS_ADMIN \
 --cap-add SYS_RESOURCE \
 --device /dev/fuse \
