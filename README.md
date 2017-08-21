@@ -6,15 +6,29 @@ git clone https://github.com/mkieboom/mapr-pacc-postgres-docker
 cd mapr-pacc-postgres-docker  
 ```
 
-##### Modify the Postgres variables in the launch.sh script  
+##### Modify the Postgres variables
+By modifying the Dockerfile, eg:  
 ```
-vi launch.sh
+vi Dockerfile
 PGDATA_LOCATION=/mapr/demo.mapr.com/postgres
 PG_USER=mapr
 PG_PWD=mapr
 PG_DB=mapr
 ```
+Or by providing them as command line arguments in the below docker run commands, eg:  
+```
+-e PGDATA_LOCATION=/mapr/demo.mapr.com/postgres \
+-e PG_USER=mapr \
+-e PG_PWD=mapr \
+-e PG_DB=mapr \
+```
 
+##### Create the Postgres data directory  
+```
+# Manually create the MapR volume for the Postgress Data Location
+# eg: in case of PGDATA_LOCATION=/mapr/demo.mapr.com/postgres:
+maprcli volume create -name postgres -path /postgres
+```
 ##### Build the container  
 ```
 docker build -t mkieboom/mapr-pacc-postgres-docker .

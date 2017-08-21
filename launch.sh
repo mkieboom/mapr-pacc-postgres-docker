@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Default values
-PGDATA_LOCATION=/mapr/demo.mapr.com/postgres
-PG_USER=mapr
-PG_PWD=mapr
-PG_DB=mapr
-
 echo "###################################################################"
 echo "########        Postgres configuration details             ########"
 echo "###################################################################"

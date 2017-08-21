@@ -5,14 +5,15 @@
 
 #
 # Use a MapR PACC CentOS 7 image as the base
-#FROM maprtech/pacc
-FROM maprtech/pacc:5.2.0_2.0_centos7
+FROM maprtech/pacc
 
 MAINTAINER mkieboom @ mapr.com
 
-# Fix the MapR repositories as they are currently pointing to MapR internal repo's
-RUN sed -ie "s|artifactory.devops.lab/artifactory/prestage|package.mapr.com|g" /etc/yum.repos.d/mapr_eco.repo
-RUN sed -ie "s|artifactory.devops.lab/artifactory/prestage|package.mapr.com|g" /etc/yum.repos.d/mapr_core.repo
+# Set Postgres environment variables, change to your liking
+ENV PGDATA_LOCATION /mapr/demo.mapr.com/postgres
+ENV PG_USER mapr
+ENV PG_PWD mapr
+ENV PG_DB mapr
 
 # Install Postgres
 RUN yum install -y postgresql-server
@@ -24,4 +25,4 @@ RUN chmod +x /launch.sh
 # Expose the Postgres server port
 EXPOSE 5432
 
-CMD ["start", "/launch.sh"]
+CMD /launch.sh
